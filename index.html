@@ -4,19 +4,6 @@
     <meta charset="UTF-8">
     <title>HeroQuest - Tácticas y Visión (Edición Oficial)</title>
     <!-- Conectamos Tailwind para el nuevo diseño moderno -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-    tailwind.config = {
-        theme: {
-            extend: {
-                fontFamily: {
-                    serif: ['Lora', 'Georgia', 'serif'],
-                    cinzel: ['Cinzel', 'serif'],
-                }
-            }
-        }
-    }
-</script>
     <style>
         /* --- TEMA VISUAL HEROQUEST 2021 --- */
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap');
@@ -201,23 +188,14 @@
     <div class="app-layout">
         <!-- PANEL IZQUIERDO -->
         <div class="panel">
-            <div class="mb-5">
-    <h3 class="font-cinzel text-sm font-bold text-[#7c0a02] border-b-2 border-[#c5a059] pb-1 mb-3 uppercase tracking-wide">
-        Lupa del Sabio
-    </h3>
-    <div class="grid grid-cols-2 gap-2">
-        <button id="btnZoomOut" class="bg-gradient-to-b from-[#4a4a4a] to-[#2c2c2c] hover:from-[#5a5a5a] hover:to-[#3c3c3c] text-white font-cinzel text-xs font-bold uppercase tracking-wider py-2 px-3 rounded border-2 border-[#c5a059] shadow-[2px_2px_4px_rgba(0,0,0,0.4)] active:translate-y-0.5 transition-all duration-150">
-            Alejar
-        </button>
-        <button id="btnZoomIn" class="bg-gradient-to-b from-[#4a4a4a] to-[#2c2c2c] hover:from-[#5a5a5a] hover:to-[#3c3c3c] text-white font-cinzel text-xs font-bold uppercase tracking-wider py-2 px-3 rounded border-2 border-[#c5a059] shadow-[2px_2px_4px_rgba(0,0,0,0.4)] active:translate-y-0.5 transition-all duration-150">
-            Acercar
-        </button>
-        <button id="btnZoomReset" class="col-span-2 bg-gradient-to-b from-[#4a4a4a] to-[#2c2c2c] hover:from-[#5a5a5a] hover:to-[#3c3c3c] text-white font-cinzel text-xs font-bold uppercase tracking-wider py-2 px-3 rounded border-2 border-[#c5a059] shadow-[2px_2px_4px_rgba(0,0,0,0.4)] active:translate-y-0.5 transition-all duration-150">
-            Vista Completa
-        </button>
+ <div class="control-group">
+    <h3>Lupa del Sabio</h3>
+    <div class="btn-grid">
+        <button id="btnZoomOut">Alejar</button>
+        <button id="btnZoomIn">Acercar</button>
+        <button id="btnZoomReset" class="full-width">Vista Completa</button>
     </div>
 </div>
-
             <div class="control-group">
                 <h3>Pergaminos de Guardado</h3>
                 <div class="btn-grid">
