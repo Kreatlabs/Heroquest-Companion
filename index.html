@@ -2,10 +2,11 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>HeroQuest - Tácticas y Visión V11</title>
+    <title>HeroQuest - Tácticas y Visión V12 (Geometría Perfecta)</title>
     <style>
         /* --- TEMA VISUAL HEROQUEST 2021 --- */
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap');
+
         :root { 
             --hq-bg: #1a1a1a; 
             --hq-parchment: #e8dcc5;
@@ -34,7 +35,12 @@
             overflow: hidden; 
         }
         
-        h1, h3, h4 { font-family: 'Cinzel', serif; color: var(--hq-red); text-shadow: 1px 1px 0px rgba(255,255,255,0.3); margin-top: 0; }
+        h1, h3, h4 { 
+            font-family: 'Cinzel', serif; 
+            color: var(--hq-red); 
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.3);
+            margin-top: 0;
+        }
         h1 { font-size: 1.8em; margin-bottom: 10px; color: var(--hq-gold); text-shadow: 2px 2px 4px #000; letter-spacing: 2px; }
         h3 { border-bottom: 2px solid var(--hq-gold); padding-bottom: 5px; font-size: 1.1em; }
         
@@ -53,50 +59,124 @@
             box-sizing: border-box; 
         }
         
-        .center-column { flex-grow: 1; max-width: 1100px; background: #0a0a0a; border: 4px solid var(--hq-wood); border-radius: 4px; box-shadow: 0 10px 25px rgba(0,0,0,0.9); overflow: auto; display: flex; justify-content: center; align-items: flex-start; padding: 10px; }
+        .center-column { 
+            flex-grow: 1; 
+            max-width: 1100px; 
+            background: #0a0a0a; 
+            border: 4px solid var(--hq-wood); 
+            border-radius: 4px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.9); 
+            overflow: auto; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start; 
+            padding: 10px; 
+        }
+        
         .board-container { position: relative; user-select: none; flex-shrink: 0; transform-origin: top left; }
         canvas { position: absolute; top: 0; left: 0; touch-action: none; }
-        #bgCanvas { z-index: 1; } #gridCanvas { z-index: 2; } #trapCanvas | z-index: 3; } #uiCanvas { z-index: 4; }
+        #bgCanvas { z-index: 1; } #gridCanvas { z-index: 2; } #trapCanvas { z-index: 3; } #uiCanvas { z-index: 4; }
         
         .control-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 4px; font-weight: bold; font-size: 0.9em; color: var(--hq-wood); }
+        
         input[type="range"], input[type="file"], select, button { width: 100%; margin-bottom: 5px; box-sizing: border-box; font-family: 'Lora', serif; }
         select { padding: 6px; background: #fff8e7; color: var(--hq-wood); border: 1px solid var(--hq-gold); border-radius: 2px; font-weight: bold; }
         
-        button { background: linear-gradient(to bottom, #4a4a4a, #2c2c2c); color: #fff; border: 2px solid var(--hq-gold); padding: 8px; cursor: pointer; border-radius: 3px; font-weight: bold; text-transform: uppercase; font-family: 'Cinzel', serif; font-size: 0.85em; letter-spacing: 1px; box-shadow: 2px 2px 4px rgba(0,0,0,0.5); transition: all 0.2s; }
+        button { 
+            background: linear-gradient(to bottom, #4a4a4a, #2c2c2c); 
+            color: #fff; 
+            border: 2px solid var(--hq-gold); 
+            padding: 8px; 
+            cursor: pointer; 
+            border-radius: 3px; 
+            font-weight: bold; 
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            transition: all 0.2s;
+        }
         button:hover:not(:disabled) { background: linear-gradient(to bottom, #5a5a5a, #3c3c3c); transform: translateY(-1px); }
         button:active:not(:disabled) { transform: translateY(1px); box-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
         button:disabled { cursor: not-allowed; opacity: 0.5; filter: grayscale(100%); }
-        button.active { background: linear-gradient(to bottom, var(--hq-red-hover), var(--hq-red)); box-shadow: inset 0 0 10px rgba(0,0,0,0.8); border-color: #fff; }
+        
+        button.active { 
+            background: linear-gradient(to bottom, var(--hq-red-hover), var(--hq-red)); 
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8); 
+            border-color: #fff;
+        }
+        
         button.btn-success { background: linear-gradient(to bottom, #326034, #1b3d1c); }
         button.btn-success:hover:not(:disabled) { background: linear-gradient(to bottom, #3e7841, #245226); }
         button.btn-danger { background: linear-gradient(to bottom, #931b1b, #610d0d); }
         button.btn-danger:hover:not(:disabled) { background: linear-gradient(to bottom, #ad2020, #7a1111); }
         button.btn-warning { background: linear-gradient(to bottom, var(--hq-gold), #9e7f42); color: var(--hq-wood); }
+        button.btn-warning:hover:not(:disabled) { background: linear-gradient(to bottom, #d4b470, #ad8f52); }
+        
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
         .full-width { grid-column: span 2; }
         
-        .entity-card { background: rgba(255,255,255,0.4); border: 2px solid var(--hq-wood); border-left: 6px solid #0984e3; margin-bottom: 8px; padding: 8px; border-radius: 2px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s; }
+        .entity-card { 
+            background: rgba(255,255,255,0.4); 
+            border: 2px solid var(--hq-wood);
+            border-left: 6px solid #0984e3; 
+            margin-bottom: 8px; 
+            padding: 8px; 
+            border-radius: 2px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+        }
         .entity-card:hover { background: rgba(255,255,255,0.7); }
-        .entity-card.selected { background: #fff8e7; border-color: var(--hq-red); box-shadow: 0 0 8px rgba(124,10,2,0.6); }
+        .entity-card.selected { 
+            background: #fff8e7; 
+            border-color: var(--hq-red); 
+            box-shadow: 0 0 8px rgba(124,10,2,0.6); 
+        }
         .entity-card.monster { border-left-color: var(--danger); }
         .entity-info { display: flex; flex-direction: column; pointer-events: none; flex-grow: 1; }
         .entity-name { font-weight: bold; font-size: 0.95em; font-family: 'Cinzel', serif; }
         .entity-hp { font-size: 0.8em; color: var(--hq-wood); margin-top: 3px; font-weight: bold; }
         .entity-actions { display: flex; gap: 4px; }
         .btn-small { padding: 4px; font-size: 0.7em; width: auto; margin: 0; min-width: 25px; }
+        
         .graveyard { margin-top: 15px; }
         .dead-item { font-size: 0.9em; padding: 4px; border-bottom: 1px dashed var(--hq-wood); text-decoration: line-through; color: var(--hq-red); font-weight: bold; }
-        .los-result { background: rgba(255,255,255,0.5); padding: 8px; margin-top: 5px; border-radius: 2px; border-left: 4px solid var(--success); font-size: 0.85em; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--hq-gold); }
+
+        .los-result { 
+            background: rgba(255,255,255,0.5); 
+            padding: 8px; margin-top: 5px; 
+            border-radius: 2px; 
+            border-left: 4px solid var(--success); 
+            font-size: 0.85em; 
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--hq-gold);
+        }
         .los-result.blocked { border-left-color: var(--danger); }
-        #combatLog { max-height: 150px; overflow-y: auto; background: rgba(0,0,0,0.05); padding: 8px; border: 1px inset var(--hq-wood); border-radius: 2px; font-family: 'Lora', serif; font-size: 0.85em; color: var(--hq-wood); margin-top: 10px; }
+        
+        #combatLog { 
+            max-height: 150px; 
+            overflow-y: auto; 
+            background: rgba(0,0,0,0.05); 
+            padding: 8px; 
+            border: 1px inset var(--hq-wood);
+            border-radius: 2px; 
+            font-family: 'Lora', serif; 
+            font-size: 0.85em; 
+            color: var(--hq-wood); 
+            margin-top: 10px; 
+        }
         .log-entry { border-bottom: 1px dotted #ccc; padding-bottom: 4px; margin-bottom: 4px; }
         .log-hit { color: var(--hq-red); font-weight: bold; }
         .log-def { color: #0984e3; font-weight: bold; }
     </style>
 </head>
 <body>
-    <h1>HEROQUEST <span style="font-size:0.5em; color:var(--hq-gold); vertical-align:middle;">v11</span><br>TÁCTICAS Y VISIÓN</h1>
+    <h1>HEROQUEST <span style="font-size:0.5em; color:var(--hq-gold); vertical-align:middle;">v12</span><br>TÁCTICAS Y VISIÓN</h1>
     
     <div class="app-layout">
         <!-- PANEL IZQUIERDO -->
@@ -160,19 +240,19 @@
                 <select id="selMonster">
                     <optgroup label="Fuerzas del Terror">
                         <option value="Goblin|2|1|1">Goblin (2 Atk, 1 Def, 1 PC)</option>
-                        <option value="Orco|3|2|1">Orco (3 Atk, 2 Def< 1 PC)</option>
-                        <option value="Abominación|3|3|3">Abominación (3 Atk, 3 Def< 3 PC)</option>
-                        <option value="Esqueleto|2|2|1">Esqueleto (2 Atk, 2 Def< 1 PC)</option>
+                        <option value="Orco|3|2|1">Orco (3 Atk, 2 Def, 1 PC)</option>
+                        <option value="Abominación|3|3|3">Abominación (3 Atk, 3 Def, 3 PC)</option>
+                        <option value="Esqueleto|2|2|1">Esqueleto (2 Atk, 2 Def, 1 PC)</option>
                         <option value="Zombi|2|3|1">Zombi (2 Atk, 3 Def, 1 PC)</option>
                         <option value="Momia|3|4|2">Momia (3 Atk, 4 Def, 2 PC)</option>
-                        <option value="Guerrero del Terror|4|4|3">G. Terror (4 Atk, 4 Def< 3 PC)</option>
+                        <option value="Guerrero del Terror|4|4|3">G. Terror (4 Atk, 4 Def, 3 PC)</option>
                         <option value="Gárgola|4|5|3">Gárgola (4 Atk, 5 Def, 3 PC)</option>
                     </optgroup>
                 </select>
             </div>
 
             <div class="control-group" id="doorControls" style="display:none;">
-                <label>Orientación: (Horiz/Vert)</label>
+                <label>Orientación:</label>
                 <button id="btnOrientation">↔️ Horizontal</button>
                 <small style="display:block; margin-top:5px; font-style:italic;">(Doble Clic en Modo Juego para abrir/cerrar)</small>
                 <div id="doorStateControl" style="margin-top:8px;">
@@ -204,7 +284,7 @@
 
             <div class="control-group" id="mapConfigGroup">
                 <h3>Mapa Original</h3>
-                <button id="btnToggleMapLock" class="btn-danger" style="font-size:1em; padding:10px;">🔐 Iniciar Aventura (Fijar Mapa)</button>
+                <button id="btnToggleMapLock" class="btn-danger" style="font-size:1em; padding:10px;">🔒 Iniciar Aventura (Fijar Mapa)</button>
                 
                 <div id="mapAdjustments" style="margin-top: 10px;">
                     <label>Fondo de Tablero:</label>
@@ -233,8 +313,8 @@
         <!-- PANEL DERECHO: COMBATE -->
         <div class="panel combat-panel">
             <div class="control-group">
-                <button id="btnCalculate" class="btn-success" style="font-size: 1.1em; padding: 10px; margin-bottom: 5px;">👃 Trazar Visión</button>
-                <button id="btnCombat" class="btn-warning full-width" style="font-size: 1.1em; padding: 10px;" disabled>♔ Resolver Ataque</button>
+                <button id="btnCalculate" class="btn-success" style="font-size: 1.1em; padding: 10px; margin-bottom: 5px;">👁️ Trazar Visión</button>
+                <button id="btnCombat" class="btn-warning full-width" style="font-size: 1.1em; padding: 10px;" disabled>⚔️ Resolver Ataque</button>
             </div>
             
             <div class="control-group">
@@ -286,7 +366,7 @@
         let currentTool = 'hero'; let orientation = 'H';
         let bgImg = null; let isMapLocked = false; 
         let entityIdCounter = 0; let hoveredEntityId = null; 
-        let selectedEntities = [];
+        let selectedEntities = []; // Array of IDs [attacker, defender]
         let currentZoom = 1;
 
         const defaultBgImg = new Image();
@@ -294,13 +374,13 @@
         defaultBgImg.src = "https://upload.wikimedia.org/wikipedia/commons/e/e0/Heroquest_board.svg";
         
         // DRAG AND DROP GLOBALS
-        let isDraggingTool = false;
-        let draggedEntity = null;
-        let dragStartCell = null;
+        let isDraggingTool = false; // For walls/erasers
+        let draggedEntity = null;   // For moving heroes/monsters
+        let dragStartCell = null;   // To distinguish click from drag
         
         let state = {
             entities: [], furniture: [], traps: [],
-            hWalls: Array(rows + 1).fill().map(() => Array(cols).fill(0)),
+            hWalls: Array(rows + 1).fill().map(() => Array(cols).fill(0)), // 0:clear, 1:wall, 2:closed, 3:open
             vWalls: Array(rows).fill().map(() => Array(cols + 1).fill(0)),
             lines: [], dead: [], bgImgData: null, useDefaultMap: true
         };
@@ -326,22 +406,25 @@
         function initClassicBoard() {
             state.hWalls = Array(rows + 1).fill().map(() => Array(cols).fill(0));
             state.vWalls = Array(rows).fill().map(() => Array(cols + 1).fill(0));
-
+            
+            // Habitaciones HQ [x, y, w, h]
             const rooms = [
                 [1,1,4,3], [5,1,4,4], [1,4,4,4], [5,5,4,3], 
                 [1,9,4,4], [5,9,4,3], [1,13,4,5], [5,12,4,6], 
                 [21,1,4,4], [17,1,4,3], [21,5,4,3], [17,4,4,4], 
                 [21,9,4,4], [17,9,4,3], [21,13,4,5], [17,12,4,6], 
-                [10,7,6,5] 
+                [10,7,6,5] // Sala Central
             ];
-
+            
+            // Muros exteriores del tablero
             for(let x=1; x<25; x++) { state.hWalls[1][x] = 1; state.hWalls[18][x] = 1; }
             for(let y=1; y<18; y++) { state.vWalls[y][1] = 1; state.vWalls[y][25] = 1; }
-
+            
+            // Dibujar habitaciones
             rooms.forEach(r => {
                 const [rx, ry, rw, rh] = r;
                 for(let x=rx; x<rx+rw; x++) { state.hWalls[ry][x] = 1; state.hWalls[ry+rh][x] = 1; }
-                for(let y=ry; y<ry+rh; y++) { state.vWalls[y][rx  = 1; state.vWalls[y][rx+rw] = 1; }
+                for(let y=ry; y<ry+rh; y++) { state.vWalls[y][rx] = 1; state.vWalls[y][rx+rw] = 1; }
             });
             
             if (!state.bgImgData) {
@@ -353,7 +436,7 @@
             }
             
             drawAll();
-            addLog("<i>Tablero Clasico Preconfigurado cargado.</i>");
+            addLog("<i>Tablero Clásico Preconfigurado cargado.</i>");
         }
 
         document.getElementById('btnInitBoard').addEventListener('click', () => {
@@ -390,23 +473,107 @@
         });
 
         document.getElementById('btnOrientation').addEventListener('click', (e) => {
-            oqɥ??хѥ??????ɥ??хѥ???????  ???? X??耝 ?ì(??????????????хɝ?й????ÉQ??Ѐ???ɥ??хѥ???????  ?????Š S?â< !?ɥ齹х???耟ŠVW?â< Y??ѥ????ì(??????????ì((???????????յ??й??Ñ ?????Ñ	å%????ѹQ????•5?Á1????????‘ ٕ?Ñ1??ѕ??Ƞ????????????????ì(?????????????Í5?Á1??????􀅥Í5?Á1?????ì(????????????????Ё????􁑽?յ??й??Ñ ?????Ñ	å%?????Á ????ѵ???̜?ì(????????????????Ё݅?±	Ѹ?􁑽?յ??й??Ñ ?????Ñ	å%????ѹQ??±]?????ì(????????????????Ё?ɅÁ	Ѹ?􁑽?յ??й?Օ?åM????ѽȠ m??ф?ѽ?????Ʌ?‰t??ì(????????????????Ё?Ʌ͕É	Ѹ?􁑽?յ??й?Օ?åM????ѽȠ m??ф?ѽ?????Ʌ͕ȉt??ì(???????????€(?????????????????Í5?Á1???????ì(??????????????????????屔?????????􀝹????ì(??????????????????хɝ?й????ÉQ??Ѐ???Â~R@  ?ѕ??ȁA??ѥ???¡5???  ???§ ͸??ì(??????????????????хɝ?й????Í9????􀝉Ѹ??Ս???̜ì(????????????????݅?±	Ѹ???ͅ?????????Ք???ɅÁ	Ѹ???ͅ?????????Ք쁕Ʌ͕É	Ѹ???ͅ?????????Քì(???????????????????¡l?݅???????Ʌ??????Ʌ͕ȝt?????Ց?̡???ɕ?ÑQ?????????յ??й?Օ?åM????ѽȠ m??ф?ѽ??􉡕ɼ‰t??????????ì(??????????????????‘1??????ùA??ѥ?? %???????????? AՕ??́??Ʌ??Ʌȁ??́???????Ʌ́??Ʉ???ٕɱ?̸??ì(????????????􁕱͔?ì(??????????????????????屔?????????􀝉?????ì(??????????????????хɝ?й????ÉQ??Ѐ???Â~R@ %?????ȁ ٕ???Ʉ?¡ ???ȁ5?????ì(??????????????????хɝ?й????Í9????􀝉Ѹ??????Ȝì(????????????????݅?±	Ѹ???ͅ?????􁙅?͔???ɅÁ	Ѹ???ͅ?????􁙅?͔쁕Ʌ͕É	Ѹ???ͅ?????􁙅?͔ì(????????????ô(?????????????ɅÝ ?????€(??????????ì((??????? l?? =?????䜰??? M????????? `????? d t???É ??????????쁑??յ??й??Ñ ?????Ñ	å%????????‘ ٕ?Ñ1??ѕ??Ƞ?????М???ɅÝ ???????ì((???????????յ??й??Ñ ?????Ñ	å%???????•U??????????‘ ٕ?Ñ1??ѕ??Ƞ?????????????????ì(????????????????Ё?????􁔹хɝ?й????ÍlÁtì(??????????????????????ì(????????????????????ЁȀ􁹕܁ ??•I????Ƞ?ì(????????????????ȹ???????􀡕ؤ????ì(?????????????????????хє??͕ ???ձÑ5???􁙅?͔ì(????????????????????? %???􁹕܁%??????쁉 %??????????􀠤?????ɅÝ ????ì(????????????????????? %????Ɍ????عхɝ?йɕ?ձ????хє?? %?  ?ф????عхɝ?йɕ?ձ?ì(?????????????????ì(????????????????ȹɕ?‘ Í ?хUI0??????ì(????????????ô(??????????ì((?????????????? A IM%MQ 9
-% ???´(???????????յ??й??Ñ ?????Ñ	å%????ѹM?ٔ?????‘ ٕ?Ñ1??ѕ??Ƞ???????????????ì(????????????????ì(????????????????????±MѽɅ???͕Ñ%ѕ????Å}ٕͅ}??Ĝ? )M=8???ɥ??????ì(?????????????????????хє???хє???‘
-?չѕ?聕?ѥ?å%‘
-?չѕȰ(??????????????????????????쁼聑??յ??й??Ñ ?????Ñ	å%???? =?????䜤?م?Ք???聑??յ??й??Ñ ?????Ñ	å%???? M???????م?Ք???聑??յ??й??Ñ ?????Ñ	å%???? `???م?Ք???聑??յ??й??Ñ ?????Ñ	å%???? d???م?Ք?ô(???????????????????ì(??????????????????‘1??????ù ??ͅ??? 5??ѽȁ????Յɑ??????????ѥ?????????ì(????????????􁍅э?????Ȥ?ì(????????????????????Ё?Ȁ??츸??хѕ????ȹ? %?  ?ф????ձ?ì(????????????????????±MѽɅ???͕Ñ%ѕ????Å}ٕͅ}??Ĝ? )M=8???ɥ????????хє???Ȱ??‘
-?չѕ?聕?ѥ?å%‘
-?չѕ????ì(??????????????????‘1???‰ Յɑ????ͥ???????? 1?????¡3 ???є???ͼ????ì(????????????ô(??????????ì((???????????յ??й??Ñ ?????Ñ	å%????ѹ1????????‘ ٕ?Ñ1??ѕ??Ƞ???????????????ì(????????????????Ё??ф?? )M=8????͔?????±MѽɅ?????Ñ%ѕ????Å}ٕͅ}??Ĝ??ì(??????????????????ф??ì(?????????????????хє?􁑅ф??хє쁕?ѥ?å%‘
-?չѕȀ􁑅ф??‘
-?չѕ?ì(??????????????????????ф???????ì(???????????????????????յ??й??Ñ ?????Ñ	å%???? =?????䜤?م?Ք?􁑅ф???????쁑??յ??й??Ñ ?????Ñ	å%???? M???????م?Ք?􁑅ф???????ì(???????????????????????յ??й??Ñ ?????Ñ	å%???? `???م?Ք?􁑅ф???????쁑??յ??й??Ñ ?????Ñ	å%???? d???م?Ք?􁑅ф???????ì(????????????????ô(???????????????€(?????????????????????хє??͕ ???ձÑ5????ì(????????????????????? %???􁑕??ձÑ	 %??ì(????????????????􁕱͔??????хє?? %?  ?ф??ì(????????????????????? %???􁹕܁%??????쁉 %??????????􀠤?????ɅÝ ????쁉 %????Ɍ????хє?? %?  ?фì(????????????????􁕱͔?? %??????ձ?ì(???????????????€(?????????????????ɅÝ ??????????ѕ
-????ÑU$??쁅?‘1??????ùA??ѥ?? I??х?Ʌ?????????ì(????????????ô(??????????ì((???????????յ??й??Ñ ?????Ñ	å%????ѹ
-???É ???????‘ ٕ?Ñ1??ѕ??Ƞ???????????????ì(????????????????????ɴ?Ÿ
-ý	??ɅȁQ= <????????ɥ?Ѽ?????ì(?????????????????хє???쁕?ѥѥ??? mt????ɹ???ɔ? mt???Ʌ??? mt???????? mt??????? mt??? %?  ?ф聹ձ????͕ ???ձÑ5??聙??͔??¡]?????  ?Ʌ??ɽ?̀??Ĥ?????????????????  ?Ʌ䡍??̤???????????Ù]?????  ?Ʌ??ɽ?̤?????????????????  ?Ʌ䡍??̀??Ĥ???????????ì(????????????????? %??????ձ?쁕?ѥ?å%‘
-?չѕȀ???쁑??յ??й??Ñ ?????Ñ	å%????????Ñ1?????????É!Q50?􀜜ì(???????????????????յ??й??Ñ ?????Ñ	å%???????•U????????م?Ք?􀈈ì(?????????????????ɅÝ ??????????ѕ
-????ÑU$??ì(????????????ô(??????????ì((?????????????? %9%
-% 1%i 
-' M8???´(????????ݥ???ܹ???????􀠤????ì(????????????????Ёٕͅ‘ ?ф?􁱽??±MѽɅ?????Ñ%ѕ????Å}ٕͅ}??Ĝ?ì(???????????????ٕͅ‘ ?ф??쁑??յ??й??Ñ ?????Ñ	å%????ѹ1???????????????ô(??????????????͔?쁥??Ñ
-???ͥ 	??ɐ????􀼼 
-?ɝ????́??ɽ́? MY ??? !?ɽEՕ?Ё??ѽ· ?ѥ?????є(?????????ì((?????????????? I 9  I%i  <???´(?????????չ?ѥ????ɅÝ	????ɽչ????ì(???????????????̹???????ÉI??Р??????ݥ?Ѡ???????Ф쁍??̹??????±M?屔?􀜌???????쁍??̹??????±I??Р??????ݥ?Ѡ???????Фì(????????????????? %????ì(???????????????????̹????????± ??????????͕ ???С???յ??й??Ñ ?????Ñ	å%???? =?????䜤?م?Ք?ì(????????????????????Ё̀?????͕ ???С???յ??й??Ñ ?????Ñ	å%???? M???????م?Ք?ì(???????????????????̹????ɅÝ%?????? %???????͕ ???С???յ??й??Ñ ?????Ñ	å%???? `???م?Ք??????͕ ???С???յ??й??Ñ ?????Ñ	å%???? d???م?Ք???? %???ݥ?Ѡ???̰?? %????????Ѐ¨s);
+            orientation = orientation === 'H' ? 'V' : 'H';
+            e.target.innerText = orientation === 'H' ? '↔️ Horizontal' : '↕️ Vertical';
+        });
+
+        document.getElementById('btnToggleMapLock').addEventListener('click', (e) => {
+            isMapLocked = !isMapLocked;
+            const adj = document.getElementById('mapAdjustments');
+            const wallBtn = document.getElementById('btnToolWall');
+            const trapBtn = document.querySelector('[data-tool="trap"]');
+            const eraserBtn = document.querySelector('[data-tool="eraser"]');
+            
+            if (isMapLocked) {
+                adj.style.display = 'none';
+                e.target.innerText = '🔓 Detener Partida (Modo Edición)'; 
+                e.target.className = 'btn-success';
+                wallBtn.disabled = true; trapBtn.disabled = true; eraserBtn.disabled = true;
+                if (['wall', 'trap', 'eraser'].includes(currentTool)) document.querySelector('[data-tool="hero"]').click();
+                addLog("<b>Partida Iniciada.</b> Puedes arrastrar las miniaturas para moverlas.");
+            } else {
+                adj.style.display = 'block';
+                e.target.innerText = '🔒 Iniciar Aventura (Fijar Mapa)'; 
+                e.target.className = 'btn-danger';
+                wallBtn.disabled = false; trapBtn.disabled = false; eraserBtn.disabled = false;
+            }
+            drawAll(); 
+        });
+
+        ['bgOpacity', 'bgScale', 'bgX', 'bgY'].forEach(id => { document.getElementById(id).addEventListener('input', drawAll); });
+
+        document.getElementById('imageUpload').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const r = new FileReader();
+                r.onload = (ev) => {
+                    state.useDefaultMap = false;
+                    bgImg = new Image(); bgImg.onload = () => drawAll();
+                    bgImg.src = ev.target.result; state.bgImgData = ev.target.result;
+                };
+                r.readAsDataURL(file);
+            }
+        });
+
+        // --- PERSISTENCIA ---
+        document.getElementById('btnSave').addEventListener('click', () => {
+            try {
+                localStorage.setItem('hq_save_v12', JSON.stringify({
+                    state: state, idCounter: entityIdCounter,
+                    conf: { o: document.getElementById('bgOpacity').value, s: document.getElementById('bgScale').value, x: document.getElementById('bgX').value, y: document.getElementById('bgY').value }
+                }));
+                addLog("<i>El sabio Mentor ha guardado la partida.</i>");
+            } catch (err) {
+                const s2 = {...state}; s2.bgImgData = null;
+                localStorage.setItem('hq_save_v12', JSON.stringify({state: s2, idCounter: entityIdCounter}));
+                addLog("Guardado sin imagen (Límite peso).");
+            }
+        });
+
+        document.getElementById('btnLoad').addEventListener('click', () => {
+            const data = JSON.parse(localStorage.getItem('hq_save_v12'));
+            if (data) {
+                state = data.state; entityIdCounter = data.idCounter;
+                if (data.conf) {
+                    document.getElementById('bgOpacity').value = data.conf.o; document.getElementById('bgScale').value = data.conf.s;
+                    document.getElementById('bgX').value = data.conf.x; document.getElementById('bgY').value = data.conf.y;
+                }
+                
+                if (state.useDefaultMap) {
+                    bgImg = defaultBgImg;
+                } else if (state.bgImgData) { 
+                    bgImg = new Image(); bgImg.onload = () => drawAll(); bgImg.src = state.bgImgData; 
+                } else {
+                    bgImg = null; 
+                }
+                
+                drawAll(); updateCombatUI(); addLog("<i>Partida Restaurada.</i>");
+            }
+        });
+
+        document.getElementById('btnClearAll').addEventListener('click', () => {
+            if(confirm('¿Borrar TODO el laberinto?')) {
+                state = { entities: [], furniture: [], traps: [], lines: [], dead: [], bgImgData: null, useDefaultMap: false, hWalls: Array(rows + 1).fill().map(() => Array(cols).fill(0)), vWalls: Array(rows).fill().map(() => Array(cols + 1).fill(0)) };
+                bgImg = null; entityIdCounter = 0; document.getElementById('combatLog').innerHTML = '';
+                document.getElementById('imageUpload').value = "";
+                drawAll(); updateCombatUI();
+            }
+        });
+
+        // --- INICIALIZACIÓN ---
+        window.onload = () => {
+            const savedData = localStorage.getItem('hq_save_v12');
+            if(savedData) { document.getElementById('btnLoad').click(); }
+            else { initClassicBoard(); } 
+        };
+
+        // --- RENDERIZADO ---
+        function drawBackground() {
+            ctxs.bg.clearRect(0, 0, width, height); ctxs.bg.fillStyle = '#0a0a0a'; ctxs.bg.fillRect(0, 0, width, height);
+            if (bgImg) {
+                ctxs.bg.globalAlpha = parseFloat(document.getElementById('bgOpacity').value);
+                const s = parseFloat(document.getElementById('bgScale').value);
+                ctxs.bg.drawImage(bgImg, parseFloat(document.getElementById('bgX').value), parseFloat(document.getElementById('bgY').value), bgImg.width * s, bgImg.height * s);
                 ctxs.bg.globalAlpha = 1.0;
             }
         }
@@ -418,15 +585,15 @@
             for (let i = 0; i <= rows; i++) { ctxs.grid.beginPath(); ctxs.grid.moveTo(0, i * cellSize); ctxs.grid.lineTo(width, i * cellSize); ctxs.grid.stroke(); }
 
             const drawSegment = (x0, y0, x1, y1, type) => {
-                if (type === 1) { // MURO BLANCO
+                if (type === 1) { // Muro Solido
                     ctxs.grid.beginPath(); ctxs.grid.moveTo(x0, y0); ctxs.grid.lineTo(x1, y1);
                     ctxs.grid.lineWidth = 6; ctxs.grid.strokeStyle = '#ffffff'; ctxs.grid.stroke();
-                } else if (type === 2) { // PUERTA CERRADA
+                } else if (type === 2) { // Puerta Cerrada
                     ctxs.grid.beginPath(); ctxs.grid.moveTo(x0, y0); ctxs.grid.lineTo(x1, y1);
                     ctxs.grid.lineWidth = 10; ctxs.grid.strokeStyle = '#8b4513'; ctxs.grid.stroke();
                     ctxs.grid.beginPath(); ctxs.grid.moveTo(x0, y0); ctxs.grid.lineTo(x1, y1);
                     ctxs.grid.lineWidth = 2; ctxs.grid.strokeStyle = '#5c4033'; ctxs.grid.stroke();
-                } else if (type === 3) { // PUERTA ABIERTA (Solo peanas)
+                } else if (type === 3) { // Puerta Abierta (Solo esquinas)
                     const baseLenX = (x1-x0)*0.25; const baseLenY = (y1-y0)*0.25;
                     ctxs.grid.beginPath(); ctxs.grid.moveTo(x0, y0); ctxs.grid.lineTo(x0+baseLenX, y0+baseLenY);
                     ctxs.grid.lineWidth = 12; ctxs.grid.strokeStyle = '#555'; ctxs.grid.stroke();
@@ -443,7 +610,7 @@
             ctxs.trap.clearRect(0, 0, width, height);
             state.traps.forEach(t => {
                 if (!isMapLocked || t.revealed) {
-                    ctxs.trap.fillStyle = t.revealed ? 'rgba(124, 10, 2, 0.6)' : 'rgba(197, 160, 89, 0.4)';
+                    ctxs.trap.fillStyle = t.revealed ? 'rgba(124, 10, 2, 0.6)' : 'rgba(197, 160, 89, 0.4)'; // Red if revealed, Gold if hidden (editor)
                     ctxs.trap.fillRect(t.x * cellSize + 2, t.y * cellSize + 2, cellSize - 4, cellSize - 4);
                     
                     ctxs.trap.fillStyle = '#fff'; ctxs.trap.font = 'bold 11px Cinzel, serif'; ctxs.trap.textAlign = 'center';
@@ -455,6 +622,7 @@
 
         function drawEntities() {
             ctxs.ui.clearRect(0, 0, width, height);
+
             state.furniture.forEach(f => {
                 ctxs.ui.fillStyle = '#8e44ad';
                 if (f.type === 'mesa') ctxs.ui.fillStyle = '#5c4033';
@@ -468,6 +636,7 @@
 
             state.entities.forEach(e => {
                 const cx = e.x * cellSize + cellSize/2; const cy = e.y * cellSize + cellSize/2;
+                
                 ctxs.ui.beginPath(); ctxs.ui.arc(cx, cy, cellSize/2 - 4, 0, Math.PI * 2);
                 ctxs.ui.fillStyle = e.type === 'hero' ? '#0984e3' : '#a31105'; ctxs.ui.fill();
                 
@@ -480,7 +649,8 @@
                 ctxs.ui.fillText(e.name.substring(0, 3).toUpperCase(), cx, cy - 2);
                 ctxs.ui.font = 'bold 12px Lora, serif'; ctxs.ui.fillText(e.hp, cx, cy + 11);
             });
-            
+
+            // Draw Lines of Sight
             state.lines.forEach(l => {
                 ctxs.ui.beginPath(); ctxs.ui.moveTo(l.x1, l.y1); ctxs.ui.lineTo(l.x2, l.y2);
                 ctxs.ui.strokeStyle = l.clear ? '#27ae60' : '#7c0a02';
@@ -497,11 +667,13 @@
         // --- INTERACCIÓN TABLERO Y DRAG & DROP ---
         function checkTrapActivation(e) {
             if (!isMapLocked) return; 
+            
             const trapIdx = state.traps.findIndex(t => t.x === e.x && t.y === e.y && !t.revealed);
             if (trapIdx > -1) {
                 const t = state.traps[trapIdx];
                 t.revealed = true;
-                addLog(`⚠️ <b>$~e.name} ha activado una trampa: ${t.type.toUpperCase()}</b>`);
+                addLog(`⚠️ <b>${e.name} ha activado una trampa: ${t.type.toUpperCase()}</b>`);
+                
                 if (t.type === 'foso') {
                     e.inPit = true; e.hp--;
                     addLog(`<span class="log-hit">Cae al foso: 1 Herida. (PC: ${e.hp})</span>`);
@@ -526,16 +698,20 @@
             const mouseX = (e.clientX - rect.left) / currentZoom; const mouseY = (e.clientY - rect.top) / currentZoom;
             const cellX = Math.floor(mouseX / cellSize); const cellY = Math.floor(mouseY / cellSize);
             if (cellX < 0 || cellX >= cols || cellY < 0 || cellY >= rows) return;
+            
             dragStartCell = { x: cellX, y: cellY };
 
             if (isMapLocked) {
                 const ent = state.entities.find(en => en.x === cellX && en.y === cellY);
                 if (ent) {
                     draggedEntity = ent;
-                    state.lines = []; document.getElementById('losResults').innerHTML = '<p style="color:var(--hq-wood); font-size:0.9em; text-align:center;">Líneas limpiadas.</p>'; drawAll();
+                    state.lines = []; // LIMPIEZA AUTOMÁTICA DE VISIÓN AL MOVERSE
+                    document.getElementById('losResults').innerHTML = '<p style="color:var(--hq-wood); font-size:0.9em; text-align:center;">Líneas limpiadas.</p>';
+                    drawAll();
                 }
             } else {
-                isDraggingTool = true; handleEditorAction(cellX, cellY, mouseX, mouseY, false);
+                isDraggingTool = true;
+                handleEditorAction(cellX, cellY, mouseX, mouseY, false);
             }
         });
 
@@ -544,8 +720,13 @@
             const mouseX = (e.clientX - rect.left) / currentZoom; const mouseY = (e.clientY - rect.top) / currentZoom;
             const cellX = Math.floor(mouseX / cellSize); const cellY = Math.floor(mouseY / cellSize);
             if (cellX < 0 || cellX >= cols || cellY < 0 || cellY >= rows) return;
-            if (isMapLocked && draggedEntity) { draggedEntity.x = cellX; draggedEntity.y = cellY; drawAll(); } 
-            else if (!isMapLocked && isDraggingTool) { handleEditorAction(cellX, cellY, mouseX, mouseY, true); }
+
+            if (isMapLocked && draggedEntity) {
+                draggedEntity.x = cellX; draggedEntity.y = cellY;
+                drawAll();
+            } else if (!isMapLocked && isDraggingTool) {
+                handleEditorAction(cellX, cellY, mouseX, mouseY, true);
+            }
         });
 
         window.addEventListener('mouseup', (e) => {
@@ -553,95 +734,308 @@
                 const rect = canvases.ui.getBoundingClientRect();
                 const mouseX = (e.clientX - rect.left) / currentZoom; const mouseY = (e.clientY - rect.top) / currentZoom;
                 const cellX = Math.floor(mouseX / cellSize); const cellY = Math.floor(mouseY / cellSize);
+                
                 const occupied = state.entities.some(en => en !== draggedEntity && en.x === cellX && en.y === cellY);
                 const isWallBlocked = state.furniture.some(f => (f.type === 'armario' || f.type === 'roca') && f.x === cellX && f.y === cellY);
-                if (occupied || isWallBlocked) { draggedEntity.x = dragStartCell.x; draggedEntity.y = dragStartCell.y; } else { draggedEntity.x = cellX; draggedEntity.y = cellY; checkTrapActivation(draggedEntity); }
+                
+                if (occupied || isWallBlocked) {
+                    draggedEntity.x = dragStartCell.x; draggedEntity.y = dragStartCell.y;
+                } else {
+                    draggedEntity.x = cellX; draggedEntity.y = cellY;
+                    checkTrapActivation(draggedEntity);
+                }
+                
                 if (dragStartCell.x === cellX && dragStartCell.y === cellY) toggleSelection(draggedEntity.id);
+                
                 draggedEntity = null; drawAll();
             }
             isDraggingTool = false;
         });
-        
+
+        // Doble Clic para Puertas (Toggle)
         canvases.ui.addEventListener('dblclick', (e) => {
-            if(!isMapLocked) return; const rect = canvases.ui.getBoundingClientRect(); const mouseX = (e.clientX - rect.left) / currentZoom; const mouseY = (e.clientY - rect.top) / currentZoom; const cellX = Math.floor(mouseX / cellSize); const cellY = Math.floor(mouseY / cellSize);
-            const edgeYH = Math.round(mouseY / cellSize); if (edgeY >= 0 && edgeYH <= rows && state.hWalls[edgeYH][cellX] >= 2) { state.hWalls[edgeYH][cellX] = state.hWalls[edgeYH][cellX] === 2 ? 3 : 2; drawAll(); return; }
-            const edgeXV = Math.round(mouseX / cellSize); if (edgeXV >= 0 && edgeXV <= cols && state.vWalls[cellY][edgeXV] >= 2) { state.vWalls[cellY][edgeXV] = state.vWalls[cellY][edgeXV] === 2 ? 3 : 2; drawAll(); }
+            if(!isMapLocked) return;
+            const rect = canvases.ui.getBoundingClientRect();
+            const mouseX = (e.clientX - rect.left) / currentZoom; const mouseY = (e.clientY - rect.top) / currentZoom;
+            const cellX = Math.floor(mouseX / cellSize); const cellY = Math.floor(mouseY / cellSize);
+            
+            const edgeYH = Math.round(mouseY / cellSize);
+            if (edgeYH >= 0 && edgeYH <= rows && state.hWalls[edgeYH][cellX] >= 2) {
+                state.hWalls[edgeYH][cellX] = state.hWalls[edgeYH][cellX] === 2 ? 3 : 2; drawAll(); return;
+            }
+            const edgeXV = Math.round(mouseX / cellSize);
+            if (edgeXV >= 0 && edgeXV <= cols && state.vWalls[cellY][edgeXV] >= 2) {
+                state.vWalls[cellY][edgeXV] = state.vWalls[cellY][edgeXV] === 2 ? 3 : 2; drawAll();
+            }
         });
 
+        // Lógica de Pintado para Modo Edición
         function handleEditorAction(cellX, cellY, mouseX, mouseY, isDragEvent) {
-            if (currentTool === 'hero' || currentTool === 'monster') { if (isDragEvent) return; const sel = document.getElementById(currentTool === 'hero' ? 'selHero' : 'selMonster').value; const [name, atk, def, hp] = sel.split('|'); state.entities = state.entities.filter(e => !(e.x === cellX && e.y === cellY)); state.entities.push({ id: ++entityIdCounter, x: cellX, y: cellY, type: currentTool, name: name, atk: parseInt(atk), def: parseInt(def), hp: parseInt(hp), maxHp: parseInt(hp), inPit: false }); } 
-            else if (currentTool === 'furniture') { if (isDragEvent) return; const type = document.getElementById('selFurniture').value; state.furniture = state.furniture.filter(f => !(f.x === cellX && f.y === cellY)); state.furniture.push({x: cellX, y: cellY, type}); }
-            else if (currentTool === 'trap') { if (isDragEvent) return; const type = document.getElementById('selTrap').value; state.traps = state.traps.filter(t => !(t.x === cellX && t.y === cellY)); state.traps.push({x: cellX, y: cellY, type: type, revealed: false}); }
-            else if (currentTool === 'wall' || currentTool === 'door') { const isWall = currentTool === 'wall'; if (!isWall && isDragEvent) return; const val = isWall ? 1 : parseInt(document.getElementById('selDoorState').value); if (orientation === 'H') { const edgeY = Math.round(mouseY / cellSize); if (edgeY >= 0 && edgeY <= rows) { if (isWall && state.hWalls[edgeY][cellX] >= 2) return; state.hWalls[edgeY][cellX] = val; } } else { const edgeX = Math.round(mouseX / cellSize); if (edgeX >= 0 && edgeX <= cols) { if (isWall && state.vWalls[cellY][edgeX] >= 2) return; state.vWalls[cellY][edgeX] = val; } } } 
-            else if (currentTool === 'eraser') { state.entities = state.entities.filter(e => !(e.x === cellX && e.y === cellY)); state.furniture = state.furniture.filter(f => !(f.x === cellX && f.y === cellY)); state.traps = state.traps.filter(t => !(t.x === cellX && t.y === cellY)); if (orientation === 'H') { const edgeY = Math.round(mouseY / cellSize); if (edgeY >= 0 && edgeY <= rows) state.hWalls[edgeY][cellX] = 0; } else { const edgeX = Math.round(mouseX / cellSize); if (edgeX >= 0 && edgeX <= cols) state.vWalls[cellY][edgeX] = 0; } } drawAll(); updateCombatUI();
+            if (currentTool === 'hero' || currentTool === 'monster') {
+                if (isDragEvent) return; 
+                const sel = document.getElementById(currentTool === 'hero' ? 'selHero' : 'selMonster').value;
+                const [name, atk, def, hp] = sel.split('|');
+                
+                state.entities = state.entities.filter(e => !(e.x === cellX && e.y === cellY));
+                state.entities.push({ id: ++entityIdCounter, x: cellX, y: cellY, type: currentTool, name: name, atk: parseInt(atk), def: parseInt(def), hp: parseInt(hp), maxHp: parseInt(hp), inPit: false });
+            } 
+            else if (currentTool === 'furniture') {
+                if (isDragEvent) return;
+                const type = document.getElementById('selFurniture').value;
+                state.furniture = state.furniture.filter(f => !(f.x === cellX && f.y === cellY));
+                state.furniture.push({x: cellX, y: cellY, type});
+            }
+            else if (currentTool === 'trap') {
+                if (isDragEvent) return;
+                const type = document.getElementById('selTrap').value;
+                state.traps = state.traps.filter(t => !(t.x === cellX && t.y === cellY));
+                state.traps.push({x: cellX, y: cellY, type: type, revealed: false});
+            }
+            else if (currentTool === 'wall' || currentTool === 'door') {
+                const isWall = currentTool === 'wall';
+                if (!isWall && isDragEvent) return; 
+                
+                const val = isWall ? 1 : parseInt(document.getElementById('selDoorState').value);
+                if (orientation === 'H') {
+                    const edgeY = Math.round(mouseY / cellSize);
+                    if (edgeY >= 0 && edgeY <= rows) {
+                        if (isWall && state.hWalls[edgeY][cellX] >= 2) return; 
+                        state.hWalls[edgeY][cellX] = val;
+                    }
+                } else {
+                    const edgeX = Math.round(mouseX / cellSize);
+                    if (edgeX >= 0 && edgeX <= cols) {
+                        if (isWall && state.vWalls[cellY][edgeX] >= 2) return;
+                        state.vWalls[cellY][edgeX] = val;
+                    }
+                }
+            } 
+            else if (currentTool === 'eraser') {
+                state.entities = state.entities.filter(e => !(e.x === cellX && e.y === cellY));
+                state.furniture = state.furniture.filter(f => !(f.x === cellX && f.y === cellY));
+                state.traps = state.traps.filter(t => !(t.x === cellX && t.y === cellY));
+                
+                if (orientation === 'H') {
+                    const edgeY = Math.round(mouseY / cellSize);
+                    if (edgeY >= 0 && edgeY <= rows) state.hWalls[edgeY][cellX] = 0;
+                } else {
+                    const edgeX = Math.round(mouseX / cellSize);
+                    if (edgeX >= 0 && edgeX <= cols) state.vWalls[cellY][edgeX] = 0;
+                }
+            }
+            drawAll(); updateCombatUI();
         }
 
-        window.setHover = function(id) { hoveredEntityId = id; drawAll(); }; window.clearHover = function() { hoveredEntityId = null; drawAll(); };
-        function toggleSelection(id) { const idx = selectedEntities.indexOf(id); if (idx > -1) selectedEntities.splice(idx, 1); else if (selectedEntities.length < 2) selectedEntities.push(id); else { selectedEntities.shift(); selectedEntities.push(id); } document.getElementById('btnCombat').disabled = selectedEntities.length !== 2; updateCombatUI(); drawAll(); }
-        window.damageEntity = function(id, amount=1) { const entity = state.entities.find(e => e.id === id); if (entity) { entity.hp -= amount; addLog(`Daño a ${entity.name} (-${amount} PC)`); if (entity.hp <= 0) window.killEntity(id); drawAll(); updateCombatUI(); } };
-        window.killEntity = function(id) { const idx = state.entities.findIndex(e => e.id === id); if (idx > -1) { const name = state.entities[idx].name; state.dead.push(name); state.entities.splice(idx, 1); addLog(`
-???  <b>${name} ha caído en combate!</b>`); selectedEntities = selectedEntities.filter(sid => sid !== id); document.getElementById('btnCombat').disabled = selectedEntities.length !== 2; state.lines = []; hoveredEntityId = null; drawAll(); updateCombatUI(); } };
+        // --- SISTEMA COMBATE Y SELECCIÓN ---
+        window.setHover = function(id) { hoveredEntityId = id; drawAll(); };
+        window.clearHover = function() { hoveredEntityId = null; drawAll(); };
+
+        function toggleSelection(id) {
+            const idx = selectedEntities.indexOf(id);
+            if (idx > -1) selectedEntities.splice(idx, 1);
+            else if (selectedEntities.length < 2) selectedEntities.push(id);
+            else { selectedEntities.shift(); selectedEntities.push(id); }
+            
+            document.getElementById('btnCombat').disabled = selectedEntities.length !== 2;
+            updateCombatUI(); drawAll();
+        }
+
+        window.damageEntity = function(id, amount=1) {
+            const entity = state.entities.find(e => e.id === id);
+            if (entity) {
+                entity.hp -= amount;
+                addLog(`Daño a ${entity.name} (-${amount} PC)`);
+                if (entity.hp <= 0) window.killEntity(id);
+                drawAll(); updateCombatUI();
+            }
+        };
+
+        window.killEntity = function(id) {
+            const idx = state.entities.findIndex(e => e.id === id);
+            if (idx > -1) {
+                const name = state.entities[idx].name;
+                state.dead.push(name);
+                state.entities.splice(idx, 1);
+                addLog(`💀 <b>${name} ha caído en combate!</b>`);
+                selectedEntities = selectedEntities.filter(sid => sid !== id);
+                document.getElementById('btnCombat').disabled = selectedEntities.length !== 2;
+                state.lines = []; hoveredEntityId = null;
+                drawAll(); updateCombatUI();
+            }
+        };
 
         function updateCombatUI() {
             const list = document.getElementById('combatList'); list.innerHTML = '';
-            if (state.entities.length === 0) list.innerHTML = '<p style="color:var(--hq-wood); font-size:0.9em; text-align:center; font-style:italic;">Catacumbas vacías.</p>'; else { state.entities.forEach(e => { const selClass = selectedEntities.includes(e.id) ? 'selected' : ''; list.innerHTML += `<div class="entity-card ${e.type} ${selClass}" onmouseenter="setHover(${e.id})" onmouseleave="clearHover()" onclick="toggleSelection(${e.id})"><div class="entity-info"><span class="entity-name">${e.name} (Atk: ${e.atk}, Def: ${e.def})</span><span class="entity-hp">P. Corp: ${e.hp} / ${e.maxHp} ${e.inPit ? '<span style="color:var(--danger)">[En Foso]</span>' : ''}</span></div><div class="entity-actions"><button class="btn-small btn-danger" onclick="event.stopPropagation(); damageEntity(${e.id}, 1)" title="Restar Vida">-1</button><button class="btn-small" style="background:#555;" onclick="event.stopPropagation(); killEntity(${e.id})" title="Eliminar">X</button></div></div>`; }); } document.getElementById('graveyardList').innerHTML = state.dead.map(d => `<div class="dead-item">🔠 ${d}</div>`).join('');
+            if (state.entities.length === 0) list.innerHTML = '<p style="color:var(--hq-wood); font-size:0.9em; text-align:center; font-style:italic;">Catacumbas vacías.</p>';
+            else {
+                state.entities.forEach(e => {
+                    const selClass = selectedEntities.includes(e.id) ? 'selected' : '';
+                    list.innerHTML += `
+                        <div class="entity-card ${e.type} ${selClass}" onmouseenter="setHover(${e.id})" onmouseleave="clearHover()" onclick="toggleSelection(${e.id})">
+                            <div class="entity-info">
+                                <span class="entity-name">${e.name} (Atk: ${e.atk}, Def: ${e.def})</span>
+                                <span class="entity-hp">P. Corp: ${e.hp} / ${e.maxHp} ${e.inPit ? '<span style="color:var(--danger)">[En Foso]</span>' : ''}</span>
+                            </div>
+                            <div class="entity-actions">
+                                <button class="btn-small btn-danger" onclick="event.stopPropagation(); damageEntity(${e.id}, 1)" title="Restar Vida">-1</button>
+                                <button class="btn-small" style="background:#555;" onclick="event.stopPropagation(); killEntity(${e.id})" title="Eliminar">X</button>
+                            </div>
+                        </div>`;
+                });
+            }
+            document.getElementById('graveyardList').innerHTML = state.dead.map(d => `<div class="dead-item">💀 ${d}</div>`).join('');
         }
 
+        // --- LÓGICA LINEA VISION MEJORADA ---
         document.getElementById('btnCalculate').addEventListener('click', () => {
-            state.lines = []; let attackers = []; let defenders = [];
+            state.lines = [];
+            let attackers = []; let defenders = [];
+            
             if (selectedEntities.length === 1) {
                 const ent = state.entities.find(e => e.id === selectedEntities[0]);
-                attackers = [ent]; defenders = state.entities.filter(e => e.id !== ent.id);
+                attackers = [ent];
+                defenders = state.entities.filter(e => e.id !== ent.id);
             } else if (selectedEntities.length === 2) {
-                attackers = [state.entities.find(e => e.id === selectedEntities[0])]; defenders = [state.entities.find(e => e.id === selectedEntities[1])];
+                attackers = [state.entities.find(e => e.id === selectedEntities[0])];
+                defenders = [state.entities.find(e => e.id === selectedEntities[1])];
             } else {
-                attackers = state.entities.filter(e => e.type === 'hero'); defenders = state.entities.filter(e => e.type === 'monster');
-                if (attackers.length === 0 || defenders.length === 0) { attackers = state.entities; defenders = state.entities; }
-            }
-            const losContainer = document.getElementById('losResults'); losContainer.innerHTML = '';
-            attackers.forEach(atk => { defenders.forEach(def => { if (atk.id === def.id) return; const res = checkLoS(atk, def); state.lines.push({ x1: res.hx, y1: res.hy, x2: res.mx, y2: res.my, clear: res.clear, hit: res.hit }); const status = res.clear ? '✅ Visible' : '❍ Bloqueado'; const cssClass = res.clear ? '' : 'blocked'; losContainer.innerHTML += `<div class="los-result ${cssClass}"><span><b>${atk.name}</b> ve a <b>${def.name}</b><br><small>${status}</small></span>${res.clear ? `<button class="btn-small btn-warning" onclick="toggleSelection(${atk.id}); toggleSelection(${def.id});">Apuntar</button>` : ''}</div>`; }); }); if(state.lines.length === 0) losContainer.innerHTML = '<p style="color:var(--hq-wood); font-size:0.9em; text-align:center;">Nada a la vista.</p>'; drawAll();
-        });
-
-        document.getElementById('btnCombat').addEventListener('click', () => {
-            if(selectedEntities.length !== 2) return; const attacker = state.entities.find(e => e.id === selectedEntities[0]); const defender = state.entities.find(e => e.id === selectedEntities[1]);
-            if(!attacker || !defender) return; addLog(`<br><b>[COMBATE] ${attacker.name} Ataca a ${defender.name}</b>`); const losRes = checkLoS(attacker, defender); const dx = Math.abs(attacker.x - defender.x); const dy = Math.abs(attacker.y - defender.y); if(!losRes.clear && (dx>1 || dy>1)) { addLog(`<span class="log-hit">Ataque fallido: No hay línea de visión.</span>`); return; }
-            let atkDice = attacker.atk; if(attacker.inPit) atkDice = Math.max(1, atkDice - 1); const atkRoll = rollDice(atkDice); addLog(`${attacker.name} tira ${atkDice} dados. Obtiene: <span class="log-hit">${atkRoll.skulls} Calaveras</span>.`); if(atkRoll.skulls === 0) { addLog("El ataque falló estrepitosamente."); return; }
-            let defDice = defender.def; if(defender.inPit) defDice = Math.max(1, defDice - 1); const defRoll = rollDice(defDice); let blocks = defender.type === 'hero' ? defRoll.wShields : defRoll.bShields; let blockStr = defender.type === 'hero' ? "Escudos Blancos" : "Escudos Negros"; addLog(`${defender.name} defiende con ${defDice} dados. Obtiene: <span class="log-def">${blocks} ${blockStr}</span>.`);
-            const damage = Math.max(0, atkRoll.skulls - blocks); if(damage > 0) { defender.hp -= damage; addLog(`<span class="log-hit">=> ${defender.name} recibe ${damage} Heridas! (Queda ${defender.hp} PC)</span>`); if(defender.hp <= 0) window.killEntity(defender.id); } else { addLog(`<span class="log-def">=> ${defender.name} bloqueó todo el dato.</span>`); }
-            selectedEntities = []; document.getElementById('btnCombat').disabled = true; drawAll(); updateCombatUI();
-        });
-
-        function checkLoS ent1, ent2) {
-            const p1 = { x: ent1.x * cellSize + cellSize/2, y: ent1.y * cellSize + cellSize/2 };
-            const p2 = { x: ent2.x * cellSize + cellSize/2, y: ent2.y * cellSize + cellSize/2 };
-            let hitPoint = null; let minT = 1;
-
-            function checkIntersect(c, d) {
-                const v1x = p2.x - p1.x; const v1y = p2.y - p1.y;
-                const v2x = d.x - c.x; const v2y = d.y - c.y;
-                const det = v1x * v2y - v1y * v2x;
-                if (det === 0) return;
+                attackers = state.entities.filter(e => e.type === 'hero');
+                defenders = state.entities.filter(e => e.type === 'monster');
                 
-                const dx = c.x - p1.x; const dy = c.y - p1.y;
-                const t = (dy * v2x - dx * v2y) / det;
-                const u = (dy * v1x - dx * v1y) / det;
-                
-                if (t > 0.001 && t < 0.999 && u > 0.001 && u < 0.999) {
-                    if (t < minT) { minT = t; hitPoint = { x: p1.x + t * v1x, y: p1.y + t * v1y }; }
+                // MEJORA: Si no hay monstruos en el tablero, trazamos visión entre Héroes para comprobar rangos.
+                if (attackers.length === 0 || defenders.length === 0) {
+                    attackers = state.entities;
+                    defenders = state.entities;
                 }
             }
 
-            for (let y = 0; y <= rows; y++) for (let x = 0; x < cols; x++) if (state.hWalls[y][x] === 1 || state.hWalls[y][x] === 2) checkIntersect({x: x * cellSize, y: y * cellSize}, {x: (x+1) * cellSize, y: y * cellSize});
-            for (let y = 0; y < rows; y++) for (let x = 0; x <= cols; x++) if (state.vWalls[y][x] === 1 || state.vWalls[y][x] === 2) checkIntersect({x: x * cellSize, y: y * cellSize}, {x: x * cellSize, y: (y+1) * cellSize});
+            const losContainer = document.getElementById('losResults'); losContainer.innerHTML = '';
+            
+            attackers.forEach(atk => {
+                defenders.forEach(def => {
+                    if (atk.id === def.id) return; // No trazar visión hacia sí mismo
+                    
+                    const res = checkLoS(atk, def);
+                    state.lines.push({ x1: res.hx, y1: res.hy, x2: res.mx, y2: res.my, clear: res.clear, hit: res.hit });
+                    
+                    const status = res.clear ? '✅ Visible' : '❌ Bloqueado';
+                    const cssClass = res.clear ? '' : 'blocked';
+                    losContainer.innerHTML += `
+                        <div class="los-result ${cssClass}">
+                            <span><b>${atk.name}</b> ve a <b>${def.name}</b><br><small>${status}</small></span>
+                            ${res.clear ? `<button class="btn-small btn-warning" onclick="toggleSelection(${atk.id}); toggleSelection(${def.id});">Apuntar</button>` : ''}
+                        </div>`;
+                });
+            });
+            if(state.lines.length === 0) losContainer.innerHTML = '<p style="color:var(--hq-wood); font-size:0.9em; text-align:center;">Nada a la vista.</p>';
+            drawAll();
+        });
+
+        document.getElementById('btnCombat').addEventListener('click', () => {
+            if(selectedEntities.length !== 2) return;
+            const attacker = state.entities.find(e => e.id === selectedEntities[0]);
+            const defender = state.entities.find(e => e.id === selectedEntities[1]);
+            if(!attacker || !defender) return;
+            
+            addLog(`<br><b>[COMBATE] ${attacker.name} Ataca a ${defender.name}</b>`);
+            
+            const losRes = checkLoS(attacker, defender);
+            const dx = Math.abs(attacker.x - defender.x); const dy = Math.abs(attacker.y - defender.y);
+            
+            if(!losRes.clear && (dx>1 || dy>1)) {
+                addLog(`<span class="log-hit">Ataque fallido: No hay línea de visión.</span>`); return;
+            }
+            
+            let atkDice = attacker.atk;
+            if(attacker.inPit) atkDice = Math.max(1, atkDice - 1);
+            
+            const atkRoll = rollDice(atkDice);
+            addLog(`${attacker.name} tira ${atkDice} dados. Obtiene: <span class="log-hit">${atkRoll.skulls} Calaveras</span>.`);
+            
+            if(atkRoll.skulls === 0) { addLog("El ataque falló estrepitosamente."); return; }
+            
+            let defDice = defender.def;
+            if(defender.inPit) defDice = Math.max(1, defDice - 1);
+            
+            const defRoll = rollDice(defDice);
+            let blocks = defender.type === 'hero' ? defRoll.wShields : defRoll.bShields;
+            let blockStr = defender.type === 'hero' ? "Escudos Blancos" : "Escudos Negros";
+            
+            addLog(`${defender.name} defiende con ${defDice} dados. Obtiene: <span class="log-def">${blocks} ${blockStr}</span>.`);
+            
+            const damage = Math.max(0, atkRoll.skulls - blocks);
+            if(damage > 0) {
+                defender.hp -= damage;
+                addLog(`<span class="log-hit">=> ${defender.name} recibe ${damage} Heridas! (Queda ${defender.hp} PC)</span>`);
+                if(defender.hp <= 0) window.killEntity(defender.id);
+            } else {
+                addLog(`<span class="log-def">=> ${defender.name} bloqueó todo el daño con su armadura.</span>`);
+            }
+            
+            selectedEntities = []; document.getElementById('btnCombat').disabled = true;
+            drawAll(); updateCombatUI();
+        });
+
+        // NUEVO MOTOR EXACTO DE INTERSECCIÓN GEOMÉTRICA (CRAMER) CORREGIDO
+        function checkLoS(ent1, ent2) {
+            const p1 = { x: ent1.x * cellSize + cellSize/2, y: ent1.y * cellSize + cellSize/2 };
+            const p2 = { x: ent2.x * cellSize + cellSize/2, y: ent2.y * cellSize + cellSize/2 };
+
+            let hitPoint = null;
+            let minT = 1;
+
+            // Fórmula estándar de Wikipedia para intersección de segmentos
+            function checkIntersect(x3, y3, x4, y4) {
+                const x1 = p1.x, y1 = p1.y;
+                const x2 = p2.x, y2 = p2.y;
+                
+                const den = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+                if (den === 0) return;
+                
+                const t = ((x1 - x3) * (y3 - y4) - (y1 - y3) * (x3 - x4)) / den;
+                const u = ((x1 - x2) * (y1 - y3) - (y1 - y2) * (x1 - x3)) / den;
+                
+                if (t > 0.001 && t < 0.999 && u > 0.001 && u < 0.999) {
+                    if (t < minT) {
+                        minT = t;
+                        hitPoint = { x: x1 + t * (x2 - x1), y: y1 + t * (y2 - y1) };
+                    }
+                }
+            }
+
+            for (let y = 0; y <= rows; y++) {
+                for (let x = 0; x < cols; x++) {
+                    if (state.hWalls[y][x] === 1 || state.hWalls[y][x] === 2) { 
+                        checkIntersect(x * cellSize, y * cellSize, (x+1) * cellSize, y * cellSize);
+                    }
+                }
+            }
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x <= cols; x++) {
+                    if (state.vWalls[y][x] === 1 || state.vWalls[y][x] === 2) {
+                        checkIntersect(x * cellSize, y * cellSize, x * cellSize, (y+1) * cellSize);
+                    }
+                }
+            }
             
             const blockers = [];
             state.entities.forEach(e => { if (e.id !== ent1.id && e.id !== ent2.id) blockers.push(e); });
-            state.furniture.forAX ch(f => { if (f.type === 'armario' || f.type === 'roca') blockers.push(f); });
+            state.furniture.forEach(f => { if (f.type === 'armario' || f.type === 'roca') blockers.push(f); });
+
             blockers.forEach(b => {
-                const m = 1; const left = b.x * cellSize + m; const right = (b.x + 1) * cellSize - m; const top = b.y * cellSize + m; const bottom = (b.y + 1) * cellSize - m;
-                checkIntersect({x: left, y: top}, {x: right, y: top}); checkIntersect({x: left, y: bottom}, {x: right, y: bottom}); checkIntersect({x: left, y: top}, {x: left, y: bottom}); checkIntersect({x: right, y: top}, {x: right, y: bottom});
+                const m = 1;
+                const left = b.x * cellSize + m; const right = (b.x + 1) * cellSize - m;
+                const top = b.y * cellSize + m; const bottom = (b.y + 1) * cellSize - m;
+                
+                checkIntersect(left, top, right, top);
+                checkIntersect(left, bottom, right, bottom);
+                checkIntersect(left, top, left, bottom);
+                checkIntersect(right, top, right, bottom);
             });
-            if (hitPoint) return { clear: false, hit: hitPoint, hx: p1.x, hy: p1.y, mx: p2.x, my: p2.y };
+
+            if (hitPoint) {
+                return { clear: false, hit: hitPoint, hx: p1.x, hy: p1.y, mx: p2.x, my: p2.y };
+            }
             return { clear: true, hit: null, hx: p1.x, hy: p1.y, mx: p2.x, my: p2.y };
         }
     </script>
