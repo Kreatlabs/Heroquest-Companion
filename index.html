@@ -120,7 +120,7 @@
         .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
         .full-width { grid-column: span 2; }
         
-        /* Fichas de Entidades (Pergamino más oscuro) */
+        /* Fichas de Entidades */
         .entity-card { 
             background: rgba(255,255,255,0.4); 
             border: 2px solid var(--hq-wood);
@@ -819,7 +819,7 @@
             document.getElementById('graveyardList').innerHTML = state.dead.map(d => `<div class="dead-item">💀 ${d}</div>`).join('');
         }
 
-        // --- MOTOR FÍSICO Y VISIÓN (GEOMETRÍA EXACTA) ---
+        // --- LÓGICA LINEA VISION MEJORADA ---
         document.getElementById('btnCalculate').addEventListener('click', () => {
             state.lines = [];
             let attackers = []; let defenders = [];
